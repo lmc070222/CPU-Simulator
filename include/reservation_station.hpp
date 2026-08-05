@@ -68,7 +68,7 @@ public:
     int start, end;
     get_range(fu, start, end);
     for (int i = start; i < end; i++) {
-      if (rs_new[i].busy == false)
+      if (rs[i].busy == false)
         return i;
     }
     return -1;
@@ -77,12 +77,13 @@ public:
     int start, end;
     get_range(fu, start, end);
     for (int i = start; i < end; i++) {
-      if (rs_new[i].busy == false) return false;
+      if (rs[i].busy == false) return false;
     }
     return true;
   }
   void issue(int idx, const DecodedInst &inst, int rob_id,
-             const class RegisterFile &rf) {
+             const class RegisterFile &rf, const class CDB &cdb,
+             const class ReorderBuffer &rob) {
     RSEntry &e = rs_new[idx];
     e.busy = true;
     e.just_issued = true;
@@ -99,7 +100,20 @@ public:
 
     e.Vj = rf.read(inst.rs1);
     e.Qj = rf.get_reorder(inst.rs1);
-    if (e.Qj != -1) e.Vj = 0;
+    if (e.Qj != -1) {
+      for (int s = 0; s < CDB_COUNT; s++) {
+        if (cdb.has_data(s) && (int32_t)cdb.get_old(s).rob_id == e.Qj) {
+          e.Vj = cdb.get_old(s).value;
+          e.Qj = -1;
+          break;
+        }
+      }
+      if (e.Qj != -1 && rob.has_value(e.Qj)) {
+        e.Vj = rob.get_value(e.Qj);
+        e.Qj = -1;
+      }
+      if (e.Qj != -1) e.Vj = 0;
+    }
     if (inst.opcode == AUIPC) {
       e.Vj = inst.pc;
       e.Qj = -1;
@@ -111,7 +125,20 @@ public:
 
     e.Vk = rf.read(inst.rs2);
     e.Qk = rf.get_reorder(inst.rs2);
-    if (e.Qk != -1) e.Vk = 0;
+    if (e.Qk != -1) {
+      for (int s = 0; s < CDB_COUNT; s++) {
+        if (cdb.has_data(s) && (int32_t)cdb.get_old(s).rob_id == e.Qk) {
+          e.Vk = cdb.get_old(s).value;
+          e.Qk = -1;
+          break;
+        }
+      }
+      if (e.Qk != -1 && rob.has_value(e.Qk)) {
+        e.Vk = rob.get_value(e.Qk);
+        e.Qk = -1;
+      }
+      if (e.Qk != -1) e.Vk = 0;
+    }
 
     if (inst.type == I_TYPE || inst.type == U_TYPE || inst.type == J_TYPE) {
       e.Qk = -1;
@@ -217,11 +244,13 @@ public:
       }
       rob.set_branch_info(rs_new[idx].rob_id, taken, target);
       cdb.broadcast(rs_new[idx].rob_id, reg_val);
+      rob.cache_dispatched_value(rs_new[idx].rob_id, reg_val);
       rs_new[idx].busy = false;
       rs_new[idx].just_issued = false;
       return;
     }
     cdb.broadcast(rs_new[idx].rob_id, result);
+    rob.cache_dispatched_value(rs_new[idx].rob_id, result);
     rs_new[idx].busy = false;
     rs_new[idx].just_issued = false;
   }

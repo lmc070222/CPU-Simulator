@@ -10,7 +10,7 @@
 #include "branch_predictor.hpp"
 
 class CPU {
-protected:
+private:
     Memory               mem;
     RegisterFile         rf;
     ReservationStations  rs;
@@ -48,6 +48,10 @@ public:
             int32_t fid = rob.get_flush_rob_id();
             rs.flush_after(fid + 1);
             rf.flush_after(fid + 1);
+            for (int i = 0; i < CDB_COUNT; i++) {
+                cdb.old[i].valid = false;
+                cdb.new_[i].valid = false;
+            }
         }
 
         rs.execute(cdb, rob, mem);
@@ -72,14 +76,14 @@ public:
                 } else if (d.is_branch) {
                     predicted = bp.predict(pc);
                 }
-                if (!rob.is_full() && !rob.has_pending_branch()
+                if (!rob.is_full() && !rob.has_pending_branch(cdb)
                     && !rs.is_full(d.fu_type)) {
                     int rob_id = rob.allocate(d, pc, predicted);
                     if (d.rd != 0) {
                         rf.set_reorder(d.rd, rob_id);
                     }
                     int rs_idx = rs.allocate(d.fu_type);
-                    rs.issue(rs_idx, d, rob_id, rf);
+                    rs.issue(rs_idx, d, rob_id, rf, cdb, rob);
                     if (d.is_branch && predicted) {
                         pc = pc + d.imm;
                     } else {

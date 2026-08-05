@@ -9,6 +9,7 @@
 
 struct ROBEntry {
   bool busy;
+  bool value_valid;
   uint32_t pc;
   uint8_t dest_reg;
   uint32_t value;
@@ -49,6 +50,7 @@ private:
      }
      buffer_new[i].value = cdb.value;
      buffer_new[i].ready = true;
+     buffer_new[i].value_valid = true;
   }
   void listen_cdb_all(CDB &cdb) {
      for (int s = 0; s < CDB_COUNT; s++) {
@@ -58,9 +60,10 @@ private:
   void flush_after(int rob_id) {
     int i = (rob_id + 1) % SIZE ;
     for (int j = 1; j < SIZE ;j++) {
-      if (i == tail) break ;
+      if (i == tail_new) break ;
       buffer_new[i].busy  = false;
       buffer_new[i].ready = false;
+      buffer_new[i].value_valid = false;
       i = (i + 1) % SIZE;
     }
     tail_new = (rob_id + 1) % SIZE ;
@@ -69,6 +72,7 @@ private:
       if (i == tail) break ;
       buffer[i].busy  = false;
       buffer[i].ready = false;
+      buffer[i].value_valid = false;
       i = (i + 1) % SIZE;
     }
   }
@@ -79,12 +83,13 @@ public:
     tail = tail_new = 0;
     for (int i = 0; i < ROB_SIZE; i++) {
       buffer[i].busy = buffer_new[i].busy = false;
+      buffer[i].value_valid = buffer_new[i].value_valid = false;
       buffer[i].ready = buffer_new[i].ready = false;
     }
   }
 
   // wires (const)
-  bool is_full() const { return (tail_new + 1) % ROB_SIZE == head_new; }
+  bool is_full() const { return (tail + 1) % SIZE == head; }
   bool is_empty() const { return head == tail; }
   bool head_ready() const { 
     if (head == tail) return false ;
@@ -95,12 +100,17 @@ public:
   int32_t  get_flush_rob_id() const { return flush_rob_id; }
   int debug_head() const { return head; }
   int debug_tail() const { return tail; }
-  bool has_pending_branch() const {
+  bool has_pending_branch(const CDB &cdb) const {
     if (head_new == tail_new) return false;
-    if (buffer_new[head_new].busy && buffer_new[head_new].is_branch
-        && !buffer_new[head_new].ready)
-        return true;
-    return false;
+    if (!buffer_new[head_new].busy || !buffer_new[head_new].is_branch)
+        return false;
+    if (buffer_new[head_new].ready)
+        return false;
+    for (int s = 0; s < CDB_COUNT; s++) {
+      if (cdb.has_data(s) && cdb.get_old(s).rob_id == head_new)
+        return false;
+    }
+    return true;
   }
 
   bool forward_store(uint32_t addr, uint8_t size, int32_t load_rob_id,
@@ -125,6 +135,7 @@ public:
     int id = tail;
     ROBEntry &e = buffer_new[id];
     e.busy = true;
+    e.value_valid = false;
     e.pc = pc;
     e.dest_reg = inst.rd;
     e.value = 0;
@@ -152,6 +163,16 @@ public:
     buffer_new[rob_id].value = value;
     buffer_new[rob_id].ready = true;
   }
+  bool has_value(int rob_id) const {
+    return buffer_new[rob_id].busy && buffer_new[rob_id].value_valid;
+  }
+  uint32_t get_value(int rob_id) const {
+    return buffer_new[rob_id].value;
+  }
+  void cache_dispatched_value(int rob_id, uint32_t value) {
+    buffer_new[rob_id].value = value;
+    buffer_new[rob_id].value_valid = true;
+  }
   void set_branch_info(int rob_id, bool taken, uint32_t target) {
     buffer_new[rob_id].actually_taken = taken;
     buffer_new[rob_id].branch_target  = target;
@@ -161,10 +182,10 @@ public:
     flush_signal = false;
     listen_cdb_all(cdb);
     if (head == tail) return ;
-    if (buffer[head].ready) { commit_head(rf, mem, bp, false); return; }
-    if (buffer_new[head].ready) { commit_head(rf, mem, bp, true); return; }
+    if (buffer[head].ready) { commit_head(cdb, rf, mem, bp, false); return; }
+    if (buffer_new[head].ready) { commit_head(cdb, rf, mem, bp, true); return; }
   }
-  void commit_head(RegisterFile &rf, Memory &mem, BranchPredictor &bp,
+  void commit_head(CDB &cdb, RegisterFile &rf, Memory &mem, BranchPredictor &bp,
                    bool use_new) {
     int hd = head;
     bool is_b = use_new ? buffer_new[hd].is_branch : buffer[hd].is_branch;
@@ -182,7 +203,7 @@ public:
 
     if (is_b) {
       bp.update(bpc, actu);
-      if (dr != 0) rf.write(dr, vl, hd);
+      if (dr != 0) { rf.write(dr, vl, hd); cdb.broadcast(hd, vl); }
       if (is_jr || pred != actu) {
         flush_after(hd);
         flush_signal = true;
@@ -190,17 +211,20 @@ public:
         correct_pc = actu ? bt : bpc + 4;
       }
       buffer_new[hd].busy = false;
+      buffer_new[hd].value_valid = false;
       head_new = (hd + 1) % SIZE;
       return;
     }
     if (is_s) {
       mem.write(sa, sd, ss);
       buffer_new[hd].busy = false;
+      buffer_new[hd].value_valid = false;
       head_new = (hd + 1) % SIZE;
       return;
     }
-    if (dr != 0) rf.write(dr, vl, hd);
+    if (dr != 0) { rf.write(dr, vl, hd); cdb.broadcast(hd, vl); }
     buffer_new[hd].busy = false;
+    buffer_new[hd].value_valid = false;
     head_new = (hd + 1) % SIZE;
   }
   void update() {

@@ -64,7 +64,7 @@ public:
 
     void flush_after(int32_t rob_id) {
         for (int i = 1; i < REG_COUNT; i++) {
-            if (reorder_id[i] >= rob_id) {
+            if (reorder_id[i] >= rob_id || reorder_id_new[i] >= rob_id) {
                 reorder_id[i] = reorder_id_new[i] = -1;
                 busy[i] = busy_new[i] = false;
             }
