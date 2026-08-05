@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/naive_interpreter.dir/src/naive_interpreter.cpp.o -o naive_interpreter 

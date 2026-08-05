@@ -1,0 +1,5 @@
+/home/lmc123456/RISC-V-Tomasulo-CPU-Simulator/build/CMakeFiles/main.dir
+/home/lmc123456/RISC-V-Tomasulo-CPU-Simulator/build/CMakeFiles/test.dir
+/home/lmc123456/RISC-V-Tomasulo-CPU-Simulator/build/CMakeFiles/naive_interpreter.dir
+/home/lmc123456/RISC-V-Tomasulo-CPU-Simulator/build/CMakeFiles/edit_cache.dir
+/home/lmc123456/RISC-V-Tomasulo-CPU-Simulator/build/CMakeFiles/rebuild_cache.dir
