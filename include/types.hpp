@@ -11,7 +11,7 @@ const int RS_LS_COUNT  = 4;
 const int RS_TOTAL     = RS_ALU_COUNT + RS_MUL_COUNT + RS_LS_COUNT;
 const int ROB_SIZE     = 16;
 const int LSB_SIZE     = 8;
-const int CDB_COUNT    = 2;
+const int CDB_COUNT    = 4;
 const int BHT_SIZE     = 64;
 
 enum Opcode {

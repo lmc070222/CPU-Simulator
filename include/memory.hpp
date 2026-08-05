@@ -7,13 +7,16 @@
 #include <sstream>
 #include <cstring>
 
+#include <vector>
+
 class Memory {
 private:
-    uint8_t mem[MEM_SIZE];
+    std::vector<uint8_t> mem;
 
 public:
+    Memory() : mem(MEM_SIZE) {}
     void load(const char* filename) {
-        memset(mem, 0, MEM_SIZE);
+        memset(mem.data(), 0, MEM_SIZE);
         std::ifstream f(filename);
         std::string line;
         uint32_t addr = 0;
@@ -51,7 +54,7 @@ public:
         if (size >= 4) { mem[addr+2] = (val >> 16) & 0xFF; mem[addr+3] = (val >> 24) & 0xFF; }
     }
 
-    uint8_t* data() { return mem; }
+    uint8_t* data() { return mem.data(); }
 };
 
 #endif
