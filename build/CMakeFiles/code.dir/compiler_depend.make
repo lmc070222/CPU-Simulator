@@ -100,6 +100,7 @@ CMakeFiles/code.dir/src/main.cpp.o: /home/lmc123456/RISC-V-Tomasulo-CPU-Simulato
   /usr/include/c++/13/initializer_list \
   /usr/include/c++/13/ios \
   /usr/include/c++/13/iosfwd \
+  /usr/include/c++/13/iostream \
   /usr/include/c++/13/istream \
   /usr/include/c++/13/new \
   /usr/include/c++/13/ostream \
@@ -328,6 +329,10 @@ CMakeFiles/code.dir/src/main.cpp.o: /home/lmc123456/RISC-V-Tomasulo-CPU-Simulato
 
 /usr/include/strings.h:
 
+/usr/include/x86_64-linux-gnu/c++/13/bits/basic_file.h:
+
+/usr/include/string.h:
+
 /usr/include/c++/13/stdexcept:
 
 /usr/include/c++/13/bits/ostream_insert.h:
@@ -465,6 +470,8 @@ CMakeFiles/code.dir/src/main.cpp.o: /home/lmc123456/RISC-V-Tomasulo-CPU-Simulato
 /usr/include/c++/13/bits/stl_vector.h:
 
 /usr/include/c++/13/ext/type_traits.h:
+
+/usr/include/c++/13/iostream:
 
 /usr/include/x86_64-linux-gnu/bits/endianness.h:
 
@@ -643,7 +650,3 @@ CMakeFiles/code.dir/src/main.cpp.o: /home/lmc123456/RISC-V-Tomasulo-CPU-Simulato
 /usr/include/stdint.h:
 
 /usr/include/stdlib.h:
-
-/usr/include/x86_64-linux-gnu/c++/13/bits/basic_file.h:
-
-/usr/include/string.h:

@@ -8,6 +8,7 @@
 #include <cstring>
 
 #include <vector>
+#include <iostream>
 
 class Memory {
 private:
@@ -21,6 +22,25 @@ public:
         std::string line;
         uint32_t addr = 0;
         while (std::getline(f, line)) {
+            if (line.empty()) continue;
+            if (line[0] == '@') {
+                addr = std::stoll(line.substr(1), nullptr, 16);
+            } else {
+                std::stringstream ss(line);
+                std::string byte_str;
+                while (ss >> byte_str) {
+                    if (byte_str.size() == 2) {
+                        mem[addr++] = std::stoul(byte_str, nullptr, 16);
+                    }
+                }
+            }
+        }
+    }
+    void load_stdin() {
+        memset(mem.data(), 0, MEM_SIZE);
+        std::string line;
+        uint32_t addr = 0;
+        while (std::getline(std::cin, line)) {
             if (line.empty()) continue;
             if (line[0] == '@') {
                 addr = std::stoll(line.substr(1), nullptr, 16);

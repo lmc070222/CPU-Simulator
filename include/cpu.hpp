@@ -38,6 +38,20 @@ public:
         cycle      = 0;
     }
 
+    void init_stdin() {
+        mem.load_stdin();
+        rf.init();
+        rs.init();
+        rob.init();
+        cdb.init();
+        bp.init();
+
+        pc         = 0;
+        halt_fetch = false;
+        halted     = false;
+        cycle      = 0;
+    }
+
     void step() {
         cdb.clear();
 
