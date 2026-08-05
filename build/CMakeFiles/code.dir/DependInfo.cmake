@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/lmc123456/RISC-V-Tomasulo-CPU-Simulator/src/test.cpp" "CMakeFiles/code.dir/src/test.cpp.o" "gcc" "CMakeFiles/code.dir/src/test.cpp.o.d"
+  "/home/lmc123456/RISC-V-Tomasulo-CPU-Simulator/src/main.cpp" "CMakeFiles/code.dir/src/main.cpp.o" "gcc" "CMakeFiles/code.dir/src/main.cpp.o.d"
   )
 
 # Targets to which this target links which contain Fortran sources.

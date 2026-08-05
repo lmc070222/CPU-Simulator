@@ -69,28 +69,28 @@ include CMakeFiles/code.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/code.dir/flags.make
 
-CMakeFiles/code.dir/src/test.cpp.o: CMakeFiles/code.dir/flags.make
-CMakeFiles/code.dir/src/test.cpp.o: /home/lmc123456/RISC-V-Tomasulo-CPU-Simulator/src/test.cpp
-CMakeFiles/code.dir/src/test.cpp.o: CMakeFiles/code.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/lmc123456/RISC-V-Tomasulo-CPU-Simulator/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/code.dir/src/test.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/code.dir/src/test.cpp.o -MF CMakeFiles/code.dir/src/test.cpp.o.d -o CMakeFiles/code.dir/src/test.cpp.o -c /home/lmc123456/RISC-V-Tomasulo-CPU-Simulator/src/test.cpp
+CMakeFiles/code.dir/src/main.cpp.o: CMakeFiles/code.dir/flags.make
+CMakeFiles/code.dir/src/main.cpp.o: /home/lmc123456/RISC-V-Tomasulo-CPU-Simulator/src/main.cpp
+CMakeFiles/code.dir/src/main.cpp.o: CMakeFiles/code.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/lmc123456/RISC-V-Tomasulo-CPU-Simulator/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/code.dir/src/main.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/code.dir/src/main.cpp.o -MF CMakeFiles/code.dir/src/main.cpp.o.d -o CMakeFiles/code.dir/src/main.cpp.o -c /home/lmc123456/RISC-V-Tomasulo-CPU-Simulator/src/main.cpp
 
-CMakeFiles/code.dir/src/test.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/code.dir/src/test.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/lmc123456/RISC-V-Tomasulo-CPU-Simulator/src/test.cpp > CMakeFiles/code.dir/src/test.cpp.i
+CMakeFiles/code.dir/src/main.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/code.dir/src/main.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/lmc123456/RISC-V-Tomasulo-CPU-Simulator/src/main.cpp > CMakeFiles/code.dir/src/main.cpp.i
 
-CMakeFiles/code.dir/src/test.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/code.dir/src/test.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/lmc123456/RISC-V-Tomasulo-CPU-Simulator/src/test.cpp -o CMakeFiles/code.dir/src/test.cpp.s
+CMakeFiles/code.dir/src/main.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/code.dir/src/main.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/lmc123456/RISC-V-Tomasulo-CPU-Simulator/src/main.cpp -o CMakeFiles/code.dir/src/main.cpp.s
 
 # Object files for target code
 code_OBJECTS = \
-"CMakeFiles/code.dir/src/test.cpp.o"
+"CMakeFiles/code.dir/src/main.cpp.o"
 
 # External object files for target code
 code_EXTERNAL_OBJECTS =
 
-/home/lmc123456/RISC-V-Tomasulo-CPU-Simulator/code: CMakeFiles/code.dir/src/test.cpp.o
+/home/lmc123456/RISC-V-Tomasulo-CPU-Simulator/code: CMakeFiles/code.dir/src/main.cpp.o
 /home/lmc123456/RISC-V-Tomasulo-CPU-Simulator/code: CMakeFiles/code.dir/build.make
 /home/lmc123456/RISC-V-Tomasulo-CPU-Simulator/code: CMakeFiles/code.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/lmc123456/RISC-V-Tomasulo-CPU-Simulator/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable /home/lmc123456/RISC-V-Tomasulo-CPU-Simulator/code"
