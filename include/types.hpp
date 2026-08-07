@@ -31,23 +31,23 @@ enum ALUOp { ALU_ADD, ALU_SUB, ALU_SLL, ALU_SLT, ALU_SLTU,
 
 
 struct DecodedInst {
-    Opcode   opcode; // 操作码
-    uint32_t pc; // 指令地址 (用于分支预测 / flush)
-    uint8_t  rd; // 目标寄存器 (0-31)
-    uint8_t  rs1;// 源寄存器 1
-    uint8_t  rs2;// 源寄存器 2
-    uint32_t imm;// 符号扩展后的立即数
-    InstType type;// 指令格式
-    FUType   fu_type;// 应分配到的功能单元
-    ALUOp    alu_op;// ALU 操作类型
-    bool     is_branch;// 是否分支指令
-    bool     is_mem_read;// 是否加载指令
-    bool     is_mem_write;// 是否存储指令
-    bool     is_halt;// 是否停机指令 (0x0ff00513)
+    Opcode   opcode; 
+    uint32_t pc; 
+    uint8_t  rd; 
+    uint8_t  rs1;
+    uint8_t  rs2;
+    uint32_t imm;
+    InstType type;
+    FUType   fu_type;
+    ALUOp    alu_op;
+    bool     is_branch;
+    bool     is_mem_read;
+    bool     is_mem_write;
+    bool     is_halt;
 };
 struct CDBValue {
-    bool     valid;// 该槽位是否有效
-    uint8_t  rob_id;// 产生结果的 ROB 条目编号
-    uint32_t value;// 计算结果 / 加载数据
+    bool     valid;
+    uint8_t  rob_id;
+    uint32_t value;
 };
 #endif

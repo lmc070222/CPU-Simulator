@@ -68,13 +68,12 @@ public:
             }
         }
 
-        rs.execute(cdb, rob, mem);
 
         rf.execute();
-
-        cdb.execute();
-
         bp.execute(rob);
+        cdb.execute();
+        rs.execute(cdb, rob, mem);
+
 
         if (!halt_fetch) {
             uint32_t inst = mem.fetch_inst(pc);

@@ -19,7 +19,7 @@ struct RSEntry {
   uint8_t rob_id;
   uint32_t pc;
   bool mem_read, mem_write;
-  uint8_t mem_size; // 1=byte, 2=half, 4=word
+  uint8_t mem_size; 
   bool is_branch;
   Opcode op;
   bool predicted_taken;
