@@ -268,7 +268,6 @@ public:
   void execute(class CDB &cdb, class ReorderBuffer &rob,
                Memory &mem) {
     listen_cdb_all(cdb);
-    // dispatch at most CDB_COUNT ready instructions per cycle
     int dispatched = 0;
     for (int pri = 0; pri < 5 && dispatched < CDB_COUNT; pri++) {
       int best = -1;

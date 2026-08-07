@@ -88,7 +88,6 @@ public:
     }
   }
 
-  // wires (const)
   bool is_full() const { return (tail + 1) % SIZE == head; }
   bool is_empty() const { return head == tail; }
   bool head_ready() const { 
@@ -129,8 +128,6 @@ public:
     }
     return false;
   }
-
-  // ports (每周期调用上限 = 1)
   int allocate(const DecodedInst &inst, uint32_t pc, bool predicted_taken) {
     int id = tail;
     ROBEntry &e = buffer_new[id];
